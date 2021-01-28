@@ -13,10 +13,13 @@ class NoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        //traeme todos los datos, sin embargo si existe q has la siguiente consulta
         return Inertia::render('Notes/Index', [
-            'notes' => Note::latest()->get()
+            'notes' => Note::latest()//quitamos ->get()
+                ->where('excerpt', 'LIKE', "%$request->q%")//cuando el extracto tengo algo de q
+                ->get()
         ]);
         //retornamos elemento Inertia (componente)
         //metodo render-> le decimos que queremos renderizar = Notes/Index
